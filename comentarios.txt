@@ -1,0 +1,67 @@
+// proteção do atributo dentro da classe -> colocar # antes do nome da variável - em análise, ainda não oficial, portanto usar _
+
+import { Cliente } from './Cliente.js';
+import { ContaCorrente } from './ContaCorrente.js';
+
+let numeroDeContas = 0;
+
+const cliente1 = new Cliente('Thaina', '064478599360');
+
+const contaCorrente1 = new ContaCorrente(cliente1, 3131);
+//comentado pois estou usando constructor agora
+// contaCorrente1.agencia = 1001;
+// contaCorrente1.cliente = cliente1; //ligando uma classe à outra
+// _________________________________________________________________
+// contaCorrente1._saldo = 0;  privado só dá certo dentro da classe! os console.log também, no lado de fora com os métodos altera o objeto.
+
+// comentado abaixo por instanciar objeto cliente direto na atribuição do objeto contaCorrente.cliente /Transcrição/
+// const cliente2 = new Cliente();
+// cliente2.nome = 'Heitor';
+// cliente2.cpf = '07503436999';
+
+const contaCorrente2 = new ContaCorrente(new Cliente("Heitor", "07503436999"), 3131);
+//comentado pois estou usando constructor agora
+// contaCorrente2.agencia = 1001;
+// contaCorrente2.cliente = new Cliente();
+// _____________________________________________
+// comentado pois agora virou privado o atributo
+// contaCorrente2.cliente.nome = "Heitor";
+// contaCorrente2.cliente.cpf = "07503436999";
+
+//chamando set e atribuindo um objeto ao cliente e get mostrando o valor fora da classe (quando é protegido, só dá para acessar e modificar usando getters e setters)
+contaCorrente2.cliente = cliente1; // Set
+console.log('Get:', contaCorrente2.cliente.nome);
+console.log('Get:', contaCorrente2.saldo);
+
+
+contaCorrente1.depositar(100)
+const valorSacado = contaCorrente1.sacar(50);
+console.log(valorSacado);
+
+console.log(contaCorrente1);
+console.log(contaCorrente2);
+
+//depósito
+let valor = 25;
+contaCorrente1.transferir(valor, contaCorrente2);
+console.log('De', contaCorrente1);
+console.log('Para', contaCorrente2);
+
+//constructor
+const cliente3 = new Cliente("Bruna", "00011122233");
+const contaCorrente3 = new ContaCorrente(cliente3, 3131);
+// cliente3.nome = "Bruna";
+// cliente3.cpf = "00011122233";
+// contaCorrente3.cliente = cliente3;
+// contaCorrente3.agencia = 3131;
+console.log(contaCorrente3);
+
+// Log de atributo estático, chama a classe, pois é global da classe e não dos seus objetos para fazer ex contaCorrente1.numeroDeContas
+console.log(ContaCorrente.numeroDeContas)
+
+  // sem _ pois fora da classe vou referenciar
+  set cliente(novoValor) {
+    // if instanceof quer dizer que só vai atribuir se for do tipo esperado
+    // this.cliente pois estou mexendo com meu atributo 
+    if(novoValor instanceof Cliente) this._cliente = novoValor;
+  }
